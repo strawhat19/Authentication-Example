@@ -3,9 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Something</title>
 </head>
+<!-- Inline CSS -->
+<style>
+    body {
+        background: black;
+        color: white;
+    }
+</style>
 <body>
-    Something
+    <!-- Step 1 Set Up Form Element -->
+    <form class="authenticationForm" action="submit">
+        <input type="email" class="email" name="email" placeholder="Enter Email..." required />
+        <input type="password" class="password" name="password" placeholder="Enter Password..." required />
+        <button type="submit">Submit</button>
+    </form>
+
+    <!-- Inline JavaScript -->
+    <script>
+        // Step 6 now we have users, lets log one in
+        // Step 7 the user is now logged in, what should they see
+            // Hide Authentication Form
+        // Step 8 the user is now logged in, they need a way to log out
+        // Step 9 the user is now logged out, what should they see
+            // Hide log out button
+        let users = JSON.parse(localStorage.getItem(`users`)) || [];
+        console.log(`Users`, users);
+
+        // Step 3: User Registration
+        const createNewUser = (email, password) => {
+
+            // Step 4
+            // Determine if user already exists
+            // How do we check out existing emails
+            // Users email validation
+            let emails = users.map(user => user.email);
+
+            if (emails.includes(email)) {
+                console.log(`Email already exists, did you want to log in instead?`);
+            } else {
+                // An object is a list of associated key value pairs
+                let newUser = {
+                    // Auto-incrementing ID only works when you have a predefined array
+                    id: users.length + 1,
+                    username: email.split(`@`)[0],
+                    registered: dayjs(new Date()).format(`dd/mm/yyyy hh:mm`),
+                    highscore: 0,
+                    email, 
+                    password
+                };
+                
+                console.log(`New User`, newUser);
+                // Step 5 if user does not exist, create new account and save to database
+                users.push(newUser);
+                localStorage.setItem(`users`, JSON.stringify(users));
+                console.log(`Updated User(s)`, users);
+            }
+
+        }
+
+        // Step 1 Set Up Form Listener
+        let authenticationForm = document.querySelector(`.authenticationForm`);
+        // Forms have a default behavior, where they like to refresh
+        // We need to prevent this
+        authenticationForm.addEventListener(`submit`, event => {
+            event.preventDefault();
+            
+            // Step 2 track and get the email and password
+            let emailField = document.querySelector(`.email`);
+            let passwordField = document.querySelector(`.password`);
+            
+            let email = emailField.value;
+            let password = passwordField.value;
+
+           createNewUser(email, password);
+        })
+    </script>
 </body>
 </html>
